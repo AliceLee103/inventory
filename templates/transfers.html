@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Transfer Requests - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Transfer Requests</h1>
+
+<div style="margin-bottom: 20px;">
+    <a href="{{ url_for('transfer_device') }}" class="btn btn-success">New Transfer Request</a>
+</div>
+
+{% if transfers %}
+<table>
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Device</th>
+            <th>Type</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Date</th>
+            <th>Transferer</th>
+            <th>Transferee</th>
+            <th>IT Dept</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transfer in transfers %}
+        <tr>
+            <td>{{ transfer.id }}</td>
+            <td>{{ transfer.serial_number }}</td>
+            <td>{{ transfer.device_type }}</td>
+            <td>{{ transfer.from_user or 'Unassigned' }}</td>
+            <td>{{ transfer.to_user }}</td>
+            <td>{{ transfer.requested_date }}</td>
+            <td><span class="status {{ transfer.transferer_approval }}">{{ transfer.transferer_approval }}</span></td>
+            <td><span class="status {{ transfer.transferee_approval }}">{{ transfer.transferee_approval }}</span></td>
+            <td><span class="status {{ transfer.it_approval }}">{{ transfer.it_approval }}</span></td>
+            <td><span class="status {{ transfer.status }}">{{ transfer.status }}</span></td>
+            <td>
+                {% if transfer.status == 'pending' %}
+                <a href="{{ url_for('approve_transfer', transfer_id=transfer.id, approval_type='transferer', action='approved') }}" 
+                   class="btn btn-small btn-success" onclick="return confirm('Approve as transferer?')">Approve (From)</a>
+                <a href="{{ url_for('approve_transfer', transfer_id=transfer.id, approval_type='transferee', action='approved') }}" 
+                   class="btn btn-small btn-success" onclick="return confirm('Approve as transferee?')">Approve (To)</a>
+                <a href="{{ url_for('approve_transfer', transfer_id=transfer.id, approval_type='it', action='approved') }}" 
+                   class="btn btn-small btn-success" onclick="return confirm('Approve as IT?')">Approve (IT)</a>
+                <a href="{{ url_for('approve_transfer', transfer_id=transfer.id, approval_type='it', action='rejected') }}" 
+                   class="btn btn-small btn-danger" onclick="return confirm('Reject this transfer?')">Reject</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No transfer requests found. <a href="{{ url_for('transfer_device') }}">Create a transfer request</a>.</p>
+{% endif %}
+{% endblock %}

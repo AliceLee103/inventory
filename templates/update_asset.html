@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Update Asset - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Update Asset</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label>Serial Number:</label>
+        <input type="text" value="{{ asset.serial_number }}" disabled>
+        <small style="color: #666;">Serial number cannot be changed</small>
+    </div>
+    
+    <div class="form-group">
+        <label for="device_type">Device Type:</label>
+        <input type="text" id="device_type" name="device_type" value="{{ asset.device_type }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" value="{{ asset.model }}" required>
+    </div>
+    
+    <div>
+        <button type="submit" class="btn btn-success">Update Asset</button>
+        <a href="{{ url_for('list_assets') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

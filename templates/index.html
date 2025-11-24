@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Inventory Management System</h1>
+
+<div class="card">
+    <p>Welcome to the Inventory Management System. Use this system to manage assets, associates, and device assignments.</p>
+</div>
+
+<div class="home-grid">
+    <div class="home-card">
+        <h3>Assets</h3>
+        <p>Manage device inventory including serial numbers, types, and models.</p>
+        <a href="{{ url_for('list_assets') }}" class="btn">View Assets</a>
+        <a href="{{ url_for('add_asset') }}" class="btn btn-success">Add Asset</a>
+    </div>
+    
+    <div class="home-card">
+        <h3>Associates</h3>
+        <p>Manage employees including user IDs, departments, and job titles.</p>
+        <a href="{{ url_for('list_associates') }}" class="btn">View Associates</a>
+        <a href="{{ url_for('add_associate') }}" class="btn btn-success">Add Associate</a>
+    </div>
+    
+    <div class="home-card">
+        <h3>Assignments</h3>
+        <p>View which devices are currently assigned to which associates.</p>
+        <a href="{{ url_for('list_assignments') }}" class="btn">View Assignments</a>
+    </div>
+    
+    <div class="home-card">
+        <h3>Transfers</h3>
+        <p>Request device transfers and manage approval workflows.</p>
+        <a href="{{ url_for('transfer_device') }}" class="btn">New Transfer</a>
+        <a href="{{ url_for('list_transfers') }}" class="btn">View Requests</a>
+    </div>
+</div>
+{% endblock %}

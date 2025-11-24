@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Assets - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Assets</h1>
+
+<div style="margin-bottom: 20px;">
+    <a href="{{ url_for('add_asset') }}" class="btn btn-success">Add New Asset</a>
+</div>
+
+{% if assets %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Serial Number</th>
+            <th>Device Type</th>
+            <th>Model</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for asset in assets %}
+        <tr>
+            <td>{{ asset.id }}</td>
+            <td>{{ asset.serial_number }}</td>
+            <td>{{ asset.device_type }}</td>
+            <td>{{ asset.model }}</td>
+            <td>{{ asset.created_at }}</td>
+            <td>
+                <a href="{{ url_for('update_asset', asset_id=asset.id) }}" class="btn btn-small">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No assets found. <a href="{{ url_for('add_asset') }}">Add your first asset</a>.</p>
+{% endif %}
+{% endblock %}

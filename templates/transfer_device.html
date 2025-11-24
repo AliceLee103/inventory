@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Transfer Device - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Transfer Device</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="asset_id">Select Device:</label>
+        <select id="asset_id" name="asset_id" required>
+            <option value="">-- Select Device --</option>
+            {% for asset in assets %}
+            <option value="{{ asset.id }}">
+                {{ asset.serial_number }} - {{ asset.device_type }} {{ asset.model }}
+                {% if assignment_map.get(asset.id) %}
+                (Currently: {{ assignment_map[asset.id].user_id }})
+                {% else %}
+                (Unassigned)
+                {% endif %}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="from_associate_id">Transfer From (Current Owner):</label>
+        <select id="from_associate_id" name="from_associate_id">
+            <option value="">-- Unassigned/New Device --</option>
+            {% for associate in associates %}
+            <option value="{{ associate.id }}">{{ associate.user_id }} - {{ associate.department }}</option>
+            {% endfor %}
+        </select>
+        <small style="color: #666;">Leave blank if device is currently unassigned</small>
+    </div>
+    
+    <div class="form-group">
+        <label for="to_associate_id">Transfer To (New Owner):</label>
+        <select id="to_associate_id" name="to_associate_id" required>
+            <option value="">-- Select Associate --</option>
+            {% for associate in associates %}
+            <option value="{{ associate.id }}">{{ associate.user_id }} - {{ associate.department }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="notes">Notes:</label>
+        <textarea id="notes" name="notes" placeholder="Add any notes about this transfer (optional)"></textarea>
+    </div>
+    
+    <div>
+        <button type="submit" class="btn btn-success">Submit Transfer Request</button>
+        <a href="{{ url_for('list_transfers') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<div class="card" style="margin-top: 30px;">
+    <h3>Transfer Process</h3>
+    <p>When you submit a transfer request:</p>
+    <ol>
+        <li>Email notifications will be sent to the current owner (if any), new owner, and IT department</li>
+        <li>All three parties must approve the transfer</li>
+        <li>Once approved by all, the device assignment will be updated automatically</li>
+    </ol>
+</div>
+{% endblock %}
