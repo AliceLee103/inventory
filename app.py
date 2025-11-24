@@ -231,8 +231,15 @@ def approve_transfer(transfer_id, approval_type, action):
     """Approve or reject a transfer request."""
     db = get_db()
     
-    if approval_type in ['transferer', 'transferee', 'it']:
-        column = f'{approval_type}_approval'
+    # Use a whitelist mapping to prevent SQL injection
+    approval_columns = {
+        'transferer': 'transferer_approval',
+        'transferee': 'transferee_approval',
+        'it': 'it_approval'
+    }
+    
+    if approval_type in approval_columns:
+        column = approval_columns[approval_type]
         db.execute(
             f'UPDATE transfer_requests SET {column} = ? WHERE id = ?',
             (action, transfer_id)
@@ -318,7 +325,8 @@ def send_transfer_notifications(transfer_id):
     ''', (transfer_id,)).fetchone()
     
     device_info = f"{transfer['device_type']} {transfer['model']} (SN: {transfer['serial_number']})"
-    base_url = request.host_url.rstrip('/')
+    # Use url_for with _external=True to avoid Host header injection
+    base_url = url_for('index', _external=True).rstrip('/')
     
     # Email to transferer (current owner)
     if transfer['from_email']:
