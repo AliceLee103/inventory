@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Add Asset - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Add New Asset</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="serial_number">Serial Number:</label>
+        <input type="text" id="serial_number" name="serial_number" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="device_type">Device Type:</label>
+        <input type="text" id="device_type" name="device_type" required placeholder="e.g., Laptop, Desktop, Monitor">
+    </div>
+    
+    <div class="form-group">
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" required placeholder="e.g., Dell XPS 15, HP EliteBook">
+    </div>
+    
+    <div>
+        <button type="submit" class="btn btn-success">Add Asset</button>
+        <a href="{{ url_for('list_assets') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

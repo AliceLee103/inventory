@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Associates - Inventory Management System{% endblock %}
+
+{% block content %}
+<h1>Associates</h1>
+
+<div style="margin-bottom: 20px;">
+    <a href="{{ url_for('add_associate') }}" class="btn btn-success">Add New Associate</a>
+</div>
+
+{% if associates %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Department</th>
+            <th>Job Title</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for associate in associates %}
+        <tr>
+            <td>{{ associate.id }}</td>
+            <td>{{ associate.user_id }}</td>
+            <td>{{ associate.department }}</td>
+            <td>{{ associate.job_title }}</td>
+            <td>{{ associate.email }}</td>
+            <td>{{ associate.created_at }}</td>
+            <td>
+                <a href="{{ url_for('update_associate', associate_id=associate.id) }}" class="btn btn-small">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No associates found. <a href="{{ url_for('add_associate') }}">Add your first associate</a>.</p>
+{% endif %}
+{% endblock %}
